@@ -1,5 +1,5 @@
 ########################################################################################
-#               This scripts creates Tables 1-5 used in our paper 
+#            This scripts creates Tables 1 and Tables 4-8 used in our paper 
 #   "Public support for carbon pricing policies and revenue recycling options" (2024)
 #             
 #                               This version: June 2024
@@ -119,33 +119,10 @@ summary(margins(logit))
 
 nagelkerke(logit) 
 
-#### TABLE 2 ####
+#### TABLE 4 ####
 check_collinearity(logit)
 
-#### TABLE 3 ####
-# OLS
-ols <- lm(z ~ rroption_new + srvy_dsgn_group +  policy_new + crbnprc_pol_group + region, data=codebook)
-ols.cluster <- coeftest(ols, vcov. = vcovCL, cluster = codebook$survey_id) # cluster standard errors by survey ID
-ols.cluster
-nobs(ols) #259 observations
-
-#### TABLE 4 ####
-# include "dechezlepretre" dummy
-logit <- glm(z ~ rroption_new + srvy_dsgn_group +  policy_new + crbnprc_pol_group + region + dechezlepretre, family=binomial(link='logit'), data=codebook)
-logit.cluster <- coeftest(logit, vcov. = vcovCL, cluster = codebook$survey_id) # cluster standard errors by survey ID
-logit.cluster
-nobs(logit) 
-nagelkerke(logit) 
-
 #### TABLE 5 ####
-# include "regression" dummy
-logit <- glm(z ~ rroption_new + srvy_dsgn_group +  policy_new + crbnprc_pol_group + region + regression, family=binomial(link='logit'), data=codebook)
-logit.cluster <- coeftest(logit, vcov. = vcovCL, cluster = codebook$survey_id) # cluster standard errors by survey ID
-logit.cluster
-nobs(logit) 
-nagelkerke(logit) 
-
-#### TABLE 6 ####
 # include weights  
 codebook$weights <- as.numeric(codebook$n)
 codebook$weightssqr <- sqrt(codebook$weights)
@@ -156,3 +133,28 @@ nobs(logit)
 
 logit.margins <- margins(logit)
 summary(margins(logit))
+
+#### TABLE 6 ####
+# include "dechezlepretre" dummy
+logit <- glm(z ~ rroption_new + srvy_dsgn_group +  policy_new + crbnprc_pol_group + region + dechezlepretre, family=binomial(link='logit'), data=codebook)
+logit.cluster <- coeftest(logit, vcov. = vcovCL, cluster = codebook$survey_id) # cluster standard errors by survey ID
+logit.cluster
+nobs(logit) 
+nagelkerke(logit) 
+
+#### TABLE 7 ####
+# include "regression" dummy
+logit <- glm(z ~ rroption_new + srvy_dsgn_group +  policy_new + crbnprc_pol_group + region + regression, family=binomial(link='logit'), data=codebook)
+logit.cluster <- coeftest(logit, vcov. = vcovCL, cluster = codebook$survey_id) # cluster standard errors by survey ID
+logit.cluster
+nobs(logit) 
+nagelkerke(logit) 
+
+#### TABLE 8 ####
+# OLS
+ols <- lm(z ~ rroption_new + srvy_dsgn_group +  policy_new + crbnprc_pol_group + region, data=codebook)
+ols.cluster <- coeftest(ols, vcov. = vcovCL, cluster = codebook$survey_id) # cluster standard errors by survey ID
+ols.cluster
+nobs(ols) #259 observations
+
+

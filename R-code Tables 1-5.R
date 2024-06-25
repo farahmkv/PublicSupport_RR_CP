@@ -156,5 +156,3 @@ nobs(logit)
 
 logit.margins <- margins(logit)
 summary(margins(logit))
-
-
